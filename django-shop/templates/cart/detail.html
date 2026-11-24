@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% load shop %}
+{% block title %}Panier — Ordinateur+{% endblock %}
+{% block content %}
+{% if not lines %}
+<div class="empty"><h1>Votre panier est vide</h1><a href="{% url 'catalog:list' %}" class="btn btn-primary">Découvrir le catalogue</a></div>
+{% else %}
+<h1>Panier</h1>
+<div class="cart">
+  <ul class="cart-lines">
+    {% for l in lines %}
+    <li class="cart-line">
+      <span class="cart-icon">{{ l.product.category.icon|default:"🖥️" }}</span>
+      <a href="{{ l.product.get_absolute_url }}" class="cart-name">{{ l.product.name }}</a>
+      <form method="post" action="{% url 'cart:update' l.product.pk %}" class="qty-form">{% csrf_token %}
+        <input type="number" name="quantity" min="1" max="10" value="{{ l.quantity }}" aria-label="Quantité" onchange="this.form.submit()">
+      </form>
+      <strong>{{ l.total_cents|euros }}</strong>
+      <form method="post" action="{% url 'cart:update' l.product.pk %}" class="inline">{% csrf_token %}
+        <input type="hidden" name="quantity" value="0"><button class="link-btn">Retirer</button>
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+  <aside class="summary">
+    <div class="row"><span>Sous-total</span><span>{{ subtotal|euros }}</span></div>
+    <div class="row"><span>Livraison</span><span>{% if shipping %}{{ shipping|euros }}{% else %}Offerte{% endif %}</span></div>
+    <div class="row total"><span>Total</span><span>{{ total|euros }}</span></div>
+    <a href="{% url 'orders:checkout' %}" class="btn btn-primary btn-block">Commander</a>
+  </aside>
+</div>
+{% endif %}
+{% endblock %}

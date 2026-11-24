@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load shop %}
+{% block title %}Commande {{ order.number }} — Ordinateur+{% endblock %}
+{% block content %}
+<div class="confirmation">
+  <h1>Merci pour votre commande, {{ order.full_name.split.0 }} !</h1>
+  <p>Commande n° <code>{{ order.number }}</code> — statut : <strong>{{ order.get_status_display }}</strong></p>
+  {% if simulation %}<p class="notice">Mode démonstration : le paiement a été simulé (aucune clé Stripe configurée).</p>{% endif %}
+  <div class="summary">
+    {% for i in order.items.all %}<div class="row"><span>{{ i.quantity }} × {{ i.name }}</span><span>{{ i.total_cents|euros }}</span></div>{% endfor %}
+    <div class="row"><span>Livraison</span><span>{% if order.shipping_cents %}{{ order.shipping_cents|euros }}{% else %}Offerte{% endif %}</span></div>
+    <div class="row total"><span>Total</span><span>{{ order.total_cents|euros }}</span></div>
+  </div>
+  <p class="muted">Livraison à : {{ order.address }}, {{ order.postal_code }} {{ order.city }}. Un e-mail de confirmation est envoyé à {{ order.email }}.</p>
+  <a href="{% url 'catalog:list' %}" class="btn">Continuer mes achats</a>
+</div>
+{% endblock %}

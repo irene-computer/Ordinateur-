@@ -1,0 +1,32 @@
+{% load static %}<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Ordinateur+ — Ordinateurs et high-tech{% endblock %}</title>
+  <meta name="description" content="{% block description %}Portables, PC gamer, écrans et accessoires livrés rapidement.{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="{% url 'catalog:home' %}" class="logo">Ordinateur<span>+</span></a>
+      <form action="{% url 'catalog:list' %}" class="search">
+        <input name="q" value="{{ q|default:'' }}" placeholder="Rechercher un produit, une marque…" aria-label="Rechercher">
+      </form>
+      <nav class="nav">
+        <a href="{% url 'catalog:list' %}">Catalogue</a>
+        {% if user.is_authenticated %}<a href="{% url 'accounts:orders' %}">Mon compte</a>{% else %}<a href="{% url 'accounts:login' %}">Connexion</a>{% endif %}
+        <a href="{% url 'cart:detail' %}" class="cart-link">Panier{% if cart_count %} <span class="badge">{{ cart_count }}</span>{% endif %}</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container main">
+    {% if messages %}<ul class="messages">{% for m in messages %}<li class="{{ m.tags }}">{{ m }}</li>{% endfor %}</ul>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    <div class="container">© {% now "Y" %} Ordinateur+ · Livraison offerte dès 500 € · Retours sous 30 jours</div>
+  </footer>
+</body>
+</html>

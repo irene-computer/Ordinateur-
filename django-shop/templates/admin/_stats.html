@@ -1,0 +1,6 @@
+{% load shop %}<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px">
+  <div class="module" style="padding:14px"><div class="help">Chiffre d'affaires du mois</div><strong style="font-size:1.5rem">{{ revenue_month|euros }}</strong></div>
+  <div class="module" style="padding:14px"><div class="help">Commandes payées ce mois</div><strong style="font-size:1.5rem">{{ orders_month }}</strong></div>
+  <div class="module" style="padding:14px"><div class="help"><a href="{% url 'admin:orders_order_changelist' %}?status__exact=PAID">À expédier</a></div><strong style="font-size:1.5rem">{{ to_ship }}</strong></div>
+  <div class="module" style="padding:14px"><div class="help"><a href="{% url 'admin:catalog_product_changelist' %}?stock=low">Stock faible (≤ {{ threshold }})</a></div><strong style="font-size:1.5rem">{{ low_stock }}</strong></div>
+</div>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Le bon ordinateur, au bon prix.</h1>
+  <p>Portables, PC gamer, écrans et accessoires sélectionnés et testés par nos experts.</p>
+  <a href="{% url 'catalog:list' %}" class="btn btn-primary">Voir le catalogue</a>
+</section>
+<h2 class="section-title">Catégories</h2>
+<div class="categories">
+  {% for c in categories %}
+  <a href="{% url 'catalog:list' %}?categorie={{ c.slug }}" class="category">
+    <span class="category-icon">{{ c.icon|default:"🖥️" }}</span><span>{{ c.name }}</span>
+    <span class="muted small">{{ c.n }} produit{{ c.n|pluralize }}</span>
+  </a>
+  {% endfor %}
+</div>
+<h2 class="section-title">Nos coups de cœur</h2>
+<div class="grid">{% for p in featured %}{% include "catalog/_card.html" %}{% endfor %}</div>
+{% endblock %}

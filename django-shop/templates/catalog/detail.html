@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load shop %}
+{% block title %}{{ product.name }} — Ordinateur+{% endblock %}
+{% block description %}{{ product.description }}{% endblock %}
+{% block content %}
+<p class="muted small"><a href="{% url 'catalog:list' %}">Catalogue</a> / <a href="{% url 'catalog:list' %}?categorie={{ product.category.slug }}">{{ product.category }}</a></p>
+<div class="product">
+  <div class="product-media">{{ product.category.icon|default:"🖥️" }}</div>
+  <div>
+    <p class="muted">{{ product.brand }}</p>
+    <h1>{{ product.name }}</h1>
+    <p class="price big">{{ product.price_cents|euros }}</p>
+    <p>{{ product.description }}</p>
+    <p class="stock {% if product.stock > 0 %}ok{% else %}out{% endif %}">{{ product.stock_label }}</p>
+    {% if product.stock > 0 %}
+    <form method="post" action="{% url 'cart:add' product.pk %}">{% csrf_token %}<button class="btn btn-primary">Ajouter au panier</button></form>
+    {% endif %}
+    <h2 class="section-title">Caractéristiques</h2>
+    <table class="specs"><tbody>
+      {% for k, v in product.specs.items %}<tr><th>{{ k|humanize_key }}</th><td>{{ v }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+</div>
+{% endblock %}

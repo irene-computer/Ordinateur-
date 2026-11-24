@@ -19,7 +19,7 @@ export function CatalogScreen({ onOpen }: { onOpen: (p: Product) => void }) {
     const t = setTimeout(() => {
       api.products({ q: query, category })
         .then((p) => { setProducts(p); setError(undefined); })
-        .catch(() => setError("Impossible de joindre le serveur. Le site web (dossier web) est-il démarré ?"))
+        .catch(() => setError("Impossible de joindre le serveur. Le serveur (dossier django-shop) est-il démarré ?"))
         .finally(() => setLoading(false));
     }, 250);
     return () => clearTimeout(t);

@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load shop %}
+{% block title %}Mes commandes — Ordinateur+{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <h1>Mes commandes</h1>
+  <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="btn btn-sm">Déconnexion</button></form>
+</div>
+{% if orders %}
+<div class="table-wrap"><table class="table">
+  <thead><tr><th>N°</th><th>Date</th><th>Articles</th><th>Total</th><th>Statut</th></tr></thead>
+  <tbody>
+  {% for o in orders %}
+  <tr>
+    <td><a href="{% url 'orders:confirmation' o.public_id %}">{{ o.number }}</a></td>
+    <td>{{ o.created_at|date:"d/m/Y" }}</td>
+    <td class="small">{% for i in o.items.all %}{{ i.quantity }} × {{ i.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+    <td>{{ o.total_cents|euros }}</td>
+    <td>{{ o.get_status_display }}{% if o.tracking_number %}<br><span class="muted small">Suivi : {{ o.tracking_number }}</span>{% endif %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% else %}<p class="muted">Vous n'avez pas encore passé de commande.</p>{% endif %}
+{% endblock %}

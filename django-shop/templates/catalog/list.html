@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{% if current_category %}{{ current_category.name }}{% else %}Catalogue{% endif %} — Ordinateur+{% endblock %}
+{% block content %}
+<h1>{% if q %}Résultats pour « {{ q }} »{% elif current_category %}{{ current_category.name }}{% else %}Tout le catalogue{% endif %}</h1>
+<div class="toolbar">
+  <div class="chips">
+    <a href="?{% if q %}q={{ q|urlencode }}&{% endif %}tri={{ sort }}" class="chip{% if not current_category %} active{% endif %}">Tout</a>
+    {% for c in categories %}
+    <a href="?categorie={{ c.slug }}{% if q %}&q={{ q|urlencode }}{% endif %}&tri={{ sort }}" class="chip{% if current_category == c %} active{% endif %}">{{ c.name }}</a>
+    {% endfor %}
+  </div>
+  <form class="sort">
+    {% if q %}<input type="hidden" name="q" value="{{ q }}">{% endif %}
+    {% if current_category %}<input type="hidden" name="categorie" value="{{ current_category.slug }}">{% endif %}
+    <label class="muted small">Trier par
+      <select name="tri">
+        <option value="pertinence"{% if sort == "pertinence" %} selected{% endif %}>Pertinence</option>
+        <option value="prix-asc"{% if sort == "prix-asc" %} selected{% endif %}>Prix croissant</option>
+        <option value="prix-desc"{% if sort == "prix-desc" %} selected{% endif %}>Prix décroissant</option>
+        <option value="nom"{% if sort == "nom" %} selected{% endif %}>Nom</option>
+      </select>
+    </label>
+    <button class="btn btn-sm">OK</button>
+  </form>
+</div>
+{% if products %}
+<div class="grid">{% for p in products %}{% include "catalog/_card.html" %}{% endfor %}</div>
+{% else %}<p class="empty">Aucun produit ne correspond à votre recherche.</p>{% endif %}
+{% endblock %}

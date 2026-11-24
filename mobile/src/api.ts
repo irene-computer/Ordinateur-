@@ -1,6 +1,7 @@
-// URL de l'API du site web (dossier ../web).
-// Sur un téléphone physique, remplacez localhost par l'IP de votre ordinateur, ex. http://192.168.1.20:3000
-export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
+// URL de l'API : par défaut le serveur Django (dossier ../django-shop, port 8000).
+// Pour utiliser la version Next.js (dossier ../web), mettez http://localhost:3000
+// Sur un téléphone physique, remplacez localhost par l'IP de votre ordinateur, ex. http://192.168.1.20:8000
+export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export type Product = {
   id: string;

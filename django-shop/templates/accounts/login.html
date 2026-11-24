@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Connexion — Ordinateur+{% endblock %}
+{% block content %}
+<form method="post" class="form narrow">{% csrf_token %}
+  <h1>Connexion</h1>
+  {% if form.errors %}<p class="error">E-mail ou mot de passe incorrect.</p>{% endif %}
+  <label>E-mail<input name="username" type="email" required autofocus autocomplete="email"></label>
+  <label>Mot de passe<input name="password" type="password" required autocomplete="current-password"></label>
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="btn btn-primary btn-block">Se connecter</button>
+  <p class="muted small">Pas encore de compte ? <a href="{% url 'accounts:signup' %}">Créer un compte</a></p>
+</form>
+{% endblock %}
